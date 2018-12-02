@@ -1,0 +1,18 @@
+{
+  "apps": [{
+    "name": "api",
+    "script": "server.js",
+    "cwd": "/home/ju/my_analytics/current/api",
+    "instances": "max",
+    "exec_mode": "cluster",
+    "wait_ready": true,
+    "env": {
+      "PORT": 8080,
+      "NODE_ENV": "production",
+      "DB_CONN":"",
+      "JWT_SECRET":""
+    },
+    "out_file": "/home/ju/my_analytics/shared/storage/logs/api.out.log",
+    "error_file": "/home/ju/my_analytics/shared/storage/logs/api.err.log"
+  }]
+}

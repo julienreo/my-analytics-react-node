@@ -1,0 +1,187 @@
+---
+- hosts: all
+  vars:
+    user: vagrant
+    group: vagrant
+    api_site: api.my-analytics
+    app_site: app.my-analytics 
+
+  tasks:
+    # Update APT cache
+    - name: Update APT cache
+      apt:
+        update_cache: yes
+      become: yes
+
+
+    # Install utilities
+    - name: Install utilities
+      apt:
+        name:
+          - htop
+        state: latest
+      become: yes
+
+
+    # Install and configure Apache2
+    - name: Install apache2
+      apt:
+        name: apache2
+        state: latest
+      become: yes
+
+    - name: Enable apache2 rewrite module
+      apache2_module:
+        state: present
+        name: rewrite
+      become: yes
+
+    - name: Enable apache2 headers module
+      apache2_module:
+        state: present
+        name: headers
+      become: yes
+
+    - name: Enable apache2 proxy module
+      apache2_module:
+        state: present
+        name: proxy
+      become: yes
+
+    - name: Enable apache2 proxy_http module
+      apache2_module:
+        state: present
+        name: proxy_http
+      become: yes
+
+    - name: Create api.my-analytics.test VHOST
+      copy:
+        src: apache_api_vhost.conf
+        dest: /etc/apache2/sites-available/{{ api_site }}.conf
+      become: yes
+
+    - name: Enable newly created VHOST
+      command: a2ensite {{ api_site }}.conf
+      become: yes
+
+    - name: Create app.my-analytics.test VHOST
+      copy:
+        src: apache_app_vhost.conf
+        dest: /etc/apache2/sites-available/{{ app_site }}.conf
+      become: yes
+
+    - name: Enable newly created VHOST
+      command: a2ensite {{ app_site }}.conf
+      become: yes
+
+    - name: Disable default VHOST
+      command: a2dissite 000-default.conf
+      become: yes
+
+    - name: Set user for apache2
+      lineinfile:
+        name: /etc/apache2/envvars
+        regexp: '^export APACHE_RUN_USER='
+        line: 'export APACHE_RUN_USER={{ user }}'
+      become: yes
+
+    - name: Set group for apache2
+      lineinfile:
+        name: /etc/apache2/envvars
+        regexp: '^export APACHE_RUN_GROUP='
+        line: 'export APACHE_RUN_GROUP={{ group }}'
+      become: yes
+
+    - name: Enable and restart apache2 service
+      service:
+        name: apache2
+        state: restarted
+        enabled: yes
+      become: yes
+
+    
+    # Install MongoDB Community Edition
+    - name: Add MongoDB package signing key
+      apt_key:
+        keyserver: keyserver.ubuntu.com
+        id: 9DA31620334BD75D9DCB49F368818C72E52529D4
+      become: yes
+
+    - name: Add MongoDB repository
+      apt_repository:
+        repo: deb https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/4.0 multiverse
+        state: present
+        update_cache: yes
+      become: yes
+
+    - name: Install mongodb
+      apt:
+        name: mongodb-org
+        state: present
+      become: yes
+
+    - name: Bind mongod on all interfaces
+      lineinfile:
+        name: /etc/mongod.conf
+        regexp: '^  bindIp:'
+        line: '  bindIp: 0.0.0.0'
+      become: yes
+
+    - name: Enable and restart mongod service
+      service:
+        name: mongod
+        state: restarted
+        enabled: yes
+      become: yes
+
+
+    # Install Node.js
+    - name: Add NodeSource package signing key
+      apt_key:
+        url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+        state: present
+      become: yes
+
+    - name: Add NodeSource repository
+      apt_repository:
+        repo: deb https://deb.nodesource.com/node_10.x xenial main
+        state: present
+        update_cache: yes
+      become: yes
+
+    - name: Install nodejs
+      apt:
+        name: nodejs
+        state: latest
+      become: yes
+
+    
+    # Install Yarn
+    - name: Add Yarn package signing key
+      apt_key:
+        url: https://dl.yarnpkg.com/debian/pubkey.gpg
+        state: present
+      become: yes
+
+    - name: Add Yarn repository
+      apt_repository:
+        repo: deb https://dl.yarnpkg.com/debian/ stable main
+        state: present
+        update_cache: yes
+      become: yes
+
+    - name: Install yarn
+      apt:
+        name: yarn
+        state: latest
+      become: yes
+
+
+    # Install PM2
+    - name: Install pm2
+      command: yarn global add pm2
+      become: yes
+
+    - name: Install pm2-logrotate
+      command: pm2 install pm2-logrotate
+      become: yes

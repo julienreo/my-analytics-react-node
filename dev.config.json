@@ -1,0 +1,22 @@
+{
+  "apps": [{
+    "name": "api",
+    "script": "server.js",
+    "cwd": "/var/www/my_analytics/api",
+    "instances": "max",
+    "exec_mode": "cluster",
+    "watch": true,
+    "watch_options": {
+      "usePolling": true
+    },
+    "wait_ready": true,
+    "env": {
+      "PORT": 8080,
+      "NODE_ENV": "production",
+      "DB_CONN":"mongodb://192.168.33.90:27017/my-analytics",
+      "JWT_SECRET":"secret"
+    },
+    "error_file": "/var/www/my_analytics/storage/logs/api.err.log",
+    "out_file": "/var/www/my_analytics/storage/logs/api.out.log"
+  }]
+}

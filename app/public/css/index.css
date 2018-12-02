@@ -1,0 +1,36 @@
+/*****************
+ Signin component
+*****************/
+
+#auth-error-alert {
+  margin-top: 20px;
+}
+
+
+/********************
+ Dashboard component
+********************/
+
+#datepicker-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+#datepicker {
+  display: flex;
+  justify-content: space-around;
+  width: 40%; 
+  align-items: center;
+  height: 70px;
+}
+
+#datepicker-submit {
+  width: 100px;
+  text-align: center;
+}
+
+#dashboard-error-alert {
+  position: absolute;
+  right: 8px;
+  z-index: 10;
+}
