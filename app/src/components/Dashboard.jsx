@@ -246,8 +246,6 @@ class Dashboard extends React.Component {
         headers: { 'x-access-token': token }
       });
 
-      this.setState({ fetchingVisits: false });
-
       // If authentication fails
       if (res.status === 401 || res.status === 403) {
         // Log user out
@@ -256,6 +254,8 @@ class Dashboard extends React.Component {
 
       // Retrieve visits
       const visits = await res.json();
+
+      this.setState({ fetchingVisits: false });
 
       // Filter visits
       const filteredVisits = this.filterVisits(visits);
