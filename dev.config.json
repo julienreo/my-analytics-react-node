@@ -12,7 +12,7 @@
     "wait_ready": true,
     "env": {
       "PORT": 8080,
-      "NODE_ENV": "production",
+      "NODE_ENV": "development",
       "DB_CONN":"mongodb://192.168.33.90:27017/my-analytics",
       "JWT_SECRET":"secret"
     },
