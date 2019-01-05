@@ -35,7 +35,8 @@ Add `api.my-analytics.test` host to `/etc/hosts` file:
 
 ```bash
 $ sudo vim /etc/hosts
-# Add the following IP address / host pair
+# Add the followings IP address / host pairs
+192.168.33.90 app.my-analytics.test
 192.168.33.90 api.my-analytics.test
 ```
 
