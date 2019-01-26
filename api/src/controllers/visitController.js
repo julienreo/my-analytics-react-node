@@ -9,13 +9,14 @@ const Visit = require(__basedir + 'src/models/Visit');
 const Site = require(__basedir + 'src/models/Site');
 const emptyGif = require(__basedir + 'lib/empty-gif');
 const { validateVisit } = require(__basedir + 'lib/validator');
+const asyncMiddleware = require(__basedir + 'src/middleware/async');
 
 
 /****************
  Create new visit
 *****************/ 
 
-exports.create = async (req, res, next) => {
+exports.create = asyncMiddleware(async (req, res, next) => {
   
   /* 
    * Retrieve and process request data
@@ -62,43 +63,38 @@ exports.create = async (req, res, next) => {
    * Save data
    */
 
-  try {
-    // Check that site id is a valid ObjectId
-    const isSiteValid = mongoose.Types.ObjectId.isValid(data.siteId);
+  // Check that site id is a valid ObjectId
+  const isSiteValid = mongoose.Types.ObjectId.isValid(data.siteId);
 
-    // If site id is not valid
-    if (!isSiteValid) {
-      return res.status(400).send({ message: 'Invalid site ID' });
-    }
-
-    // Retrieve site from which visit comes from
-    const site = await Site.findOne({ _id: mongoose.Types.ObjectId(data.siteId) });
-
-    // If site doesn't exit
-    if (site === null) {
-      return res.status(404).send({ message: 'Site not found' });
-    }
-
-    // Save visit
-    const visitInstance = new Visit({
-      host: data.host,
-      ip: data.ip,
-      date: data.date,
-      user_agent: data.userAgent,
-      is_mobile: data.isMobile,
-      country: data.country,
-      iso_country_code: data.isoCountryCode,
-      city: data.city,
-      site_id: site._id,
-      user_id: site.user_id
-    });
-
-    const newVisit = await visitInstance.save();
-    log.info(`New visit: ${newVisit._id} registered`);
-  } 
-  catch(err) {
-    if (err) return next(err);
+  // If site id is not valid
+  if (!isSiteValid) {
+    return res.status(400).send({ message: 'Invalid site ID' });
   }
+
+  // Retrieve site from which visit comes from
+  const site = await Site.findOne({ _id: mongoose.Types.ObjectId(data.siteId) });
+
+  // If site doesn't exit
+  if (site === null) {
+    return res.status(404).send({ message: 'Site not found' });
+  }
+
+  // Save visit
+  const visitInstance = new Visit({
+    host: data.host,
+    ip: data.ip,
+    date: data.date,
+    user_agent: data.userAgent,
+    is_mobile: data.isMobile,
+    country: data.country,
+    iso_country_code: data.isoCountryCode,
+    city: data.city,
+    site_id: site._id,
+    user_id: site.user_id
+  });
+
+  const newVisit = await visitInstance.save();
+  log.info(`New visit: ${newVisit._id} registered`);
 
 
   /* 
@@ -107,14 +103,14 @@ exports.create = async (req, res, next) => {
 
   res.set('Content-Type', 'image/gif');
   res.send(emptyGif);
-};
+});
 
 
 /************
  Fetch visits
 *************/ 
 
-exports.fetch = async (req, res, next) => {
+exports.fetch = asyncMiddleware(async (req, res, next) => {
   let { from, to } = req.query;
   const siteId = req.params.id;
   const userId = req.token.id;
@@ -163,14 +159,9 @@ exports.fetch = async (req, res, next) => {
    * Retrieve data 
    */
 
-  try {
-    const fetchedVisits = await Visit.find({
-      date: { '$gte': from, '$lte': to },
-      site_id: siteId
-    });
-    return res.send(fetchedVisits);
-  } 
-  catch(err) {
-    if (err) return next(err);
-  }
-};
+  const fetchedVisits = await Visit.find({
+    date: { '$gte': from, '$lte': to },
+    site_id: siteId
+  });
+  return res.send(fetchedVisits);
+});
