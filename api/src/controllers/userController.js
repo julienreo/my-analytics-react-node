@@ -25,7 +25,7 @@ exports.create = async (req, res, next) => {
 
   if (error) {
     const { message } = error.details[0];
-    return res.status(400).json({ message });
+    return res.status(400).send({ message });
   }
 
 
@@ -75,7 +75,7 @@ exports.create = async (req, res, next) => {
     );
 
     log.info(`New user: ${user.email} sites values replaced per their ids`);
-    return res.json({ success: true });
+    return res.send({ success: true });
   } 
   catch(err) {
     if (err) return next(err);
@@ -98,7 +98,7 @@ exports.login = async (req, res, next) => {
   
   if (error) {
     const { message } = error.details[0];
-    return res.status(400).json({ message });
+    return res.status(400).send({ message });
   }
 
 
@@ -119,7 +119,7 @@ exports.login = async (req, res, next) => {
     // If user doesn't exist
     if (user === null) {
       log.error(`Failed to find user: ${data.email} when attempting to login`);
-      return res.status(404).json({ message: 'Utilisateur inconnu' });
+      return res.status(404).send({ message: 'Utilisateur inconnu' });
     }
 
 
@@ -132,7 +132,7 @@ exports.login = async (req, res, next) => {
     // If passwords don't match
     if (!match) {
       log.error(`Failed to authenticate user: ${data.email}`);
-      return res.status(403).json({ message: 'Mauvaise combinaison' });
+      return res.status(403).send({ message: 'Mauvaise combinaison' });
     }
 
 
@@ -154,7 +154,7 @@ exports.login = async (req, res, next) => {
      * Return token
      */
 
-    return res.json({ message: 'Authentification réussie', token: token });
+    return res.send({ message: 'Authentification réussie', token: token });
   } 
   catch(err) {
     if (err) return next(err);
@@ -171,7 +171,7 @@ exports.fetchSites = async (req, res, next) => {
   
   try {
     const sites = await Site.find({ user_id: userId });
-    return res.json(sites);
+    return res.send(sites);
   } 
   catch(err) {
     if (err) return next(err);

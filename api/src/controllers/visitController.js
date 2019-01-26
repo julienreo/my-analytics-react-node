@@ -54,7 +54,7 @@ exports.create = async (req, res, next) => {
   
   if (error) {
     const { message } = error.details[0];
-    return res.status(400).json({ message });
+    return res.status(400).send({ message });
   }
   
 
@@ -68,7 +68,7 @@ exports.create = async (req, res, next) => {
 
     // If site id is not valid
     if (!isSiteValid) {
-      return res.status(400).json({ message: 'Invalid site ID' });
+      return res.status(400).send({ message: 'Invalid site ID' });
     }
 
     // Retrieve site from which visit comes from
@@ -76,7 +76,7 @@ exports.create = async (req, res, next) => {
 
     // If site doesn't exit
     if (site === null) {
-      return res.status(404).json({ message: 'Site not found' });
+      return res.status(404).send({ message: 'Site not found' });
     }
 
     // Save visit
@@ -128,7 +128,7 @@ exports.fetch = async (req, res, next) => {
 
   // If site id is not valid
   if (!isSiteValid) {
-    return res.status(400).json({ message: 'Invalid site ID' });
+    return res.status(400).send({ message: 'Invalid site ID' });
   }
 
   // Check that site id exists
@@ -136,17 +136,17 @@ exports.fetch = async (req, res, next) => {
 
   // If site doesn't exit
   if (site === null) {
-    return res.status(404).json({ message: 'Site not found' });
+    return res.status(404).send({ message: 'Site not found' });
   }
 
   // Check that site belongs to user
   if (site.user_id !== userId) {
-    return res.status(403).json({ message: 'Forbidden access' });
+    return res.status(403).send({ message: 'Forbidden access' });
   }
 
   // If dates are missing
   if (typeof from === 'undefined' || typeof to === 'undefined') {
-    return res.status(400).json({ message: 'Missing parameters' });
+    return res.status(400).send({ message: 'Missing parameters' });
   }
 
 
@@ -168,7 +168,7 @@ exports.fetch = async (req, res, next) => {
       date: { '$gte': from, '$lte': to },
       site_id: siteId
     });
-    return res.json(fetchedVisits);
+    return res.send(fetchedVisits);
   } 
   catch(err) {
     if (err) return next(err);

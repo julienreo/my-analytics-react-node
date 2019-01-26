@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
 
   // If token is missing
   if (!hasToken) {
-    return res.status(401).json({ message: 'Missing token'});
+    return res.status(401).send({ message: 'Missing token'});
   }
 
   // Verify token
@@ -15,7 +15,7 @@ module.exports = (req, res, next) => {
     
     // If token could not be verified
     if (err) {
-      return res.status(403).json({ message: 'Failed to authenticate user' });
+      return res.status(403).send({ message: 'Failed to authenticate user' });
     }
 
     // Add decoded token to request objet
