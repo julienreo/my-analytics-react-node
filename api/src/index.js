@@ -1,11 +1,11 @@
 const express = require('express');
-const createError = require('http-errors');
 const bodyParser = require('body-parser');
 const requestlogger = require('morgan');
 const requestIp = require('request-ip');
 
-const log = require(__basedir + 'lib/logger');
 const routes = require(__basedir + 'src/routes');
+const error = require(__basedir + 'src/middleware/error');
+const notFound = require(__basedir + 'src/middleware/not-found');
 
 // Create Express app
 const app = express();
@@ -32,15 +32,9 @@ if (process.env.NODE_ENV === 'development') {
 app.use('/', routes);
 
 // Catch 404 errors
-app.use((req, res, next) => {
-  next(createError(404));
-});
+app.use(notFound);
 
 // Handle errors
-app.use((err, req, res, next) => {
-  log.error(err);
-  res.status(err.status || 500);
-  res.send(err);
-});
+app.use(error);
 
 module.exports = app;
