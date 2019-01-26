@@ -5,6 +5,12 @@ const requestIp = require('request-ip');
 
 const routes = require(__basedir + 'src/routes');
 const error = require(__basedir + 'src/middleware/error');
+const log = require(__basedir + 'lib/logger');
+
+// Log errors thrown outside Express context
+process.on('uncaughtException', (err) => {
+  log.error(err);
+});
 
 // Create Express app
 const app = express();
