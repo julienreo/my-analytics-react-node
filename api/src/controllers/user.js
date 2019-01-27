@@ -4,10 +4,10 @@ const saltRounds = 10;
 const mongoose = require('mongoose');
 
 const log = require(__basedir + 'lib/logger');
-const User = require(__basedir + 'src/models/User');
+const { User } = require(__basedir + 'src/models/User');
+const { validateUser } = require(__basedir + 'src/models/User');
+const { validateUserDetails } = require(__basedir + 'src/models/User');
 const Site = require(__basedir + 'src/models/Site');
-const { validateUserCreation } = require(__basedir + 'lib/validator');
-const { validateUserLogin } = require(__basedir + 'lib/validator');
 const asyncMiddleware = require(__basedir + 'src/middleware/async');
 
 
@@ -22,7 +22,7 @@ exports.create = asyncMiddleware(async (req, res, next) => {
    * Validate data
    */
   
-  const { error } = validateUserCreation(data);
+  const { error } = validateUser(data);
 
   if (error) {
     const { message } = error.details[0];
@@ -85,7 +85,7 @@ exports.login = asyncMiddleware(async (req, res, next) => {
    * Validate data
    */
   
-  const { error } = validateUserLogin(data);
+  const { error } = validateUserDetails(data);
   
   if (error) {
     const { message } = error.details[0];

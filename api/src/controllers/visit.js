@@ -5,10 +5,10 @@ const mongoose = require('mongoose');
 var moment = require('moment');
 
 const log = require(__basedir + 'lib/logger');
-const Visit = require(__basedir + 'src/models/Visit');
 const Site = require(__basedir + 'src/models/Site');
+const { Visit } = require(__basedir + 'src/models/Visit');
+const { validateVisit } = require(__basedir + 'src/models/Visit');
 const emptyGif = require(__basedir + 'lib/empty-gif');
-const { validateVisit } = require(__basedir + 'lib/validator');
 const asyncMiddleware = require(__basedir + 'src/middleware/async');
 
 

@@ -1,14 +1,33 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const Joi = require('joi');
 
 const userSchema = new Schema(
   {
-    username: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    sites: [{ type: String }],
-    created_at: { type: Date, default: Date.now },
-    updated_at: { type: Date, default: Date.now }
+    username: { 
+      type: String, 
+      required: true 
+    },
+    email: { 
+      type: String, 
+      required: true, 
+      unique: true 
+    },
+    password: { 
+      type: String, 
+      required: true 
+    },
+    sites: [{ 
+      type: String 
+    }],
+    created_at: { 
+      type: Date, 
+      default: Date.now 
+    },
+    updated_at: { 
+      type: Date, 
+      default: Date.now 
+    }
   },
   { 
     versionKey: false
@@ -24,4 +43,22 @@ userSchema.pre('save', function(next) {
   next();
 });
 
-module.exports = mongoose.model('User', userSchema);
+exports.User = mongoose.model('User', userSchema);
+
+// Validate user data
+exports.validateUser  = (user) => {
+  return Joi.validate(user, Joi.object().keys({
+    username: Joi.string().required(),
+    email: Joi.string().email({ minDomainAtoms: 2 }).required(),
+    password: Joi.string().required(),
+    sites: Joi.array().items(Joi.string().required())
+  }));
+};
+
+// Validate user login details
+exports.validateUserDetails = (user) => {
+  return Joi.validate(user, Joi.object().keys({
+    email: Joi.string().email({ minDomainAtoms: 2 }).required().error(() => 'Email invalide'),
+    password: Joi.string().required().error(() => 'Mot de passe invalide')
+  }));
+};
