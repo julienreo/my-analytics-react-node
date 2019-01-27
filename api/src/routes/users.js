@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 const userController = require(__basedir + 'src/controllers/user');
-const authenticate = require(__basedir + 'src/middleware/authenticate');
+const auth = require(__basedir + 'src/middleware/auth');
 
 // Create new user
 router.post('/', userController.create);
@@ -10,6 +10,6 @@ router.post('/', userController.create);
 router.post('/login', userController.login);
 
 // Fetch user sites
-router.get('/me/sites', authenticate, userController.fetchSites);
+router.get('/me/sites', auth, userController.fetchSites);
 
 module.exports = router;
