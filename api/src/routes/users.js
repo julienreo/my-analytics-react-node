@@ -10,6 +10,6 @@ router.post('/', userController.create);
 router.post('/login', userController.login);
 
 // Fetch user sites
-router.get('/sites', authenticate, userController.fetchSites);
+router.get('/me/sites', authenticate, userController.fetchSites);
 
 module.exports = router;

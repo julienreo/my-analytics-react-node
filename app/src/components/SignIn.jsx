@@ -63,7 +63,7 @@ class SignIn extends Component {
     this.setState({ authenticating: true });
 
     try {
-      const res = await fetch(`${api}/user/login`, { 
+      const res = await fetch(`${api}/users/login`, { 
         method: 'POST', 
         headers: { 'Content-type': 'application/json' },
         body: JSON.stringify({ email, password })

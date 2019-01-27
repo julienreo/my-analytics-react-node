@@ -9,7 +9,7 @@ This is an **Analytics Tool** I made using **Node.js** and **React.js**.
 An image is placed in the footer of a website and fires a request to an **API** every time a page loads:
 
 ```html
-<img  src="http://api.my-analytics.test/visit/create/{{site-id}}">
+<img  src="http://api.my-analytics.test/visits/create/{{site-id}}">
 ```
 
 The API processes the request and creates a **visit** containing information about the **country** and **city** from which the request has been made, the **device** that has been used, the **website** that received that visit and the **user** who owns it.
@@ -26,7 +26,7 @@ From a **front-end interface**, the user can then access his websites **analytic
 Clone project:
 
 ```bash
-$ git clone git@github.com:julienreo/my-analytics-react-node.git
+$ git clone git@bitbucket.org:ju-bdx/my-analytics-node.git
 ```
 
 ### API

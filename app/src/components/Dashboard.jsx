@@ -131,7 +131,7 @@ class Dashboard extends React.Component {
 
     try {
       // Fetch user sites
-      const res = await fetch(`${api}/user/sites`, { 
+      const res = await fetch(`${api}/users/me/sites`, { 
         method: 'GET', 
         headers: { 'x-access-token': token }
       });
