@@ -5,7 +5,7 @@ const requestIp = require('request-ip');
 
 const routes = require(__basedir + 'src/routes');
 const error = require(__basedir + 'src/middleware/error');
-require(__basedir + 'lib/exception');
+require(__basedir + 'lib/error-handler');
 
 // Create Express app
 const app = express();
@@ -27,7 +27,7 @@ if (process.env.NODE_ENV === 'development') {
 // Handle routing
 app.use('/', routes);
 
-// Handle errors thrown inside Express context
+// Handle 404 and 500 errors
 app.use([error.notFound, error.server]);
 
 module.exports = app;

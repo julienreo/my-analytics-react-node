@@ -14,8 +14,8 @@ module.exports = (app) => {
   );
 
   /* 
-  * CONNECTION EVENTS
-  */
+   * CONNECTION EVENTS
+   */
 
   mongoose.connection.on('connected', () => {
     log.info('Mongoose connection established');
