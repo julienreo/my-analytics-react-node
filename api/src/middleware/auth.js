@@ -2,23 +2,14 @@ const jwt = require('jsonwebtoken');
 
 // Token authentication
 module.exports = (req, res, next) => {
-  const token = req.body.token || req.query.token || req.headers['x-access-token'];
-  const hasToken = typeof token !== 'undefined' ? true : false;
-
-  // If token is missing
-  if (!hasToken) {
-    return res.status(401).send({ message: 'Missing token'});
-  }
+  const hasToken = req.headers['x-access-token'] ? true : false;
+  if (!hasToken) return res.status(401).send({ message: 'Missing token'});
 
   // Verify token
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) return res.status(403).send({ message: 'Failed to authenticate user' });
     
-    // If token could not be verified
-    if (err) {
-      return res.status(403).send({ message: 'Failed to authenticate user' });
-    }
-
-    // Add decoded token to request objet
+    // Add decoded token to request
     req.token = decoded;
     next();
   });
