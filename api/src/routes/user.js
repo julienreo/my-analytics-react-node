@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const userController = require(__basedir + 'src/controllers/userController');
+const userController = require(__basedir + 'src/controllers/user');
 const authenticate = require(__basedir + 'src/middleware/authenticate');
 
 // Create new user

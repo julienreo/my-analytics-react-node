@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const visitController = require(__basedir + 'src/controllers/visitController');
+const visitController = require(__basedir + 'src/controllers/visit');
 const authenticate = require(__basedir + 'src/middleware/authenticate');
 
 // Fetch visits
