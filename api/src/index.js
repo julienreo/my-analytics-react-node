@@ -5,7 +5,6 @@ const requestIp = require('request-ip');
 
 const routes = require(__basedir + 'src/routes');
 const error = require(__basedir + 'src/middleware/error');
-require(__basedir + 'lib/error');
 
 // Create Express app
 const app = express();
