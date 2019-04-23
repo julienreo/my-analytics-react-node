@@ -5,7 +5,7 @@ lock '~> 3.11.0'
 set :application, 'my_analytics'
 
 # Repository address
-set :repo_url, 'git@bitbucket.org:ju-bdx/my-analytics-node.git'
+set :repo_url, 'git@github.com:julienreo/my-analytics-react-node.git'
 
 # Deploy directory
 set :deploy_to, '~/my_analytics/'
