@@ -26,7 +26,7 @@ From a **front-end interface**, the user can then access his websites **analytic
 Clone project:
 
 ```bash
-$ git clone git@bitbucket.org:ju-bdx/my-analytics-node.git
+$ git clone git@github.com:julienreo/my-analytics-react-node.git
 ```
 
 ### API
@@ -39,6 +39,7 @@ $ sudo vim /etc/hosts
 192.168.33.90 app.my-analytics.test
 192.168.33.90 api.my-analytics.test
 ```
+
 
 Create, launch and SSH into the Vagrant:
 
