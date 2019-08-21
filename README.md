@@ -20,6 +20,10 @@ The API also provides **routes** to **register** / **login** users and **authent
 
 From a **front-end interface**, the user can then access his websites **analytics data** that are represented using  **charts** in order to ease their reading (*see screenshots below*).
 
+**Ansible** is used locally to provision the **Virtual Machine** built with **Vagrant** and in production to provision the **VPS**.
+
+**Capistrano** is used to **deploy** the application and execute commands remotely.
+
 
 ## Local Installation
 
@@ -82,8 +86,6 @@ Access app through your browser: `http://app.my-analytics.test`
 
 
 ## Deployment
-
-Capistrano is used to deploy and execute commands remotely
 
 ```bash
 $ cap production deploy
