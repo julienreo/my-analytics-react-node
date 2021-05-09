@@ -20,7 +20,7 @@
     "ismobilejs": "^0.5.1",
     "joi": "^14.0.3",
     "jsonwebtoken": "^8.3.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.21",
     "mongoose": "^5.3.8",
     "request-ip": "^2.1.3",
     "simple-node-logger": "^0.93.40"
